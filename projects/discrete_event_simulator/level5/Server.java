@@ -7,20 +7,26 @@ public class Server {
     private double totalWaitingTime = 0;
 
     /**
-     * @return Customer
+     * Get waiting customer.
+     * 
+     * @return Customer customer object
      */
     public Customer getWaitingCustomer() {
         return waitingCustomer;
     }
 
     /**
-     * @param customer
+     * Set waiting customer.
+     * 
+     * @param customer customer object
      */
     public void setWaitingCustomer(Customer customer) {
         waitingCustomer = customer;
     }
 
     /**
+     * Check whether there is waiting customer.
+     * 
      * @return boolean
      */
     public boolean hasWaitingCustomer() {
@@ -28,7 +34,9 @@ public class Server {
     }
 
     /**
-     * @param customer
+     * Check whether customer is waiting.
+     * 
+     * @param customer customer
      * @return boolean
      */
     public boolean isWaitingCustomer(Customer customer) {
@@ -39,48 +47,77 @@ public class Server {
         return waitingCustomer.equals(customer);
     }
 
+    /**
+     * getter method for number of customers.
+     * 
+     * @return int
+     */
     public int numOfCustomers() {
         return numOfCustomers;
     }
 
+    /**
+     * setter method for incrementing number of customers.
+     * 
+     */
     public void addCustomers() {
         numOfCustomers++;
     }
 
     /**
+     * getter method for number of serves.
+     * 
      * @return int
      */
     public int getNumOfServes() {
         return numOfServes;
     }
 
+    /**
+     * setter method for incrementing number of serves.
+     * 
+     */
     public void addServe() {
         numOfServes++;
     }
 
     /**
+     * getter method for number of leaves.
+     * 
      * @return int
      */
     public int getNumOfLeaves() {
         return numOfLeaves;
     }
 
+    /**
+     * setter method for incrementing number of leaves.
+     * 
+     */
     public void addLeave() {
         numOfLeaves++;
     }
 
+    /**
+     * increments next service time: every services takes 1 unit of time.
+     * 
+     */
     public void updateNextServiceTime() {
         nextServiceTime++;
     }
 
     /**
-     * @param customer
+     * updates customer's time to the moment he will finish.
+     * 
+     * @param customer customer object
      */
     public void updateNextServiceTime(Customer customer) {
         nextServiceTime = customer.getTime() + 1;
     }
 
     /**
+     * getter method for total waiting time.
+     * 
      * @return double
      */
     public double getTotalWaitingTime() {
@@ -88,13 +125,17 @@ public class Server {
     }
 
     /**
-     * @param customer
+     * updates total waiting time.
+     * 
+     * @param customer customer object
      */
     public void updateTotalWaitingTime(Customer customer) {
         totalWaitingTime += nextServiceTime - 1 - customer.getTime();
     }
 
     /**
+     * getter method for calculating average waiting time.
+     * 
      * @return double
      */
     public double getAverageWaitingTime() {
@@ -102,7 +143,9 @@ public class Server {
     }
 
     /**
-     * @param customer
+     * serves customer and updates accordingly.
+     * 
+     * @param customer customer object
      * @return Customer
      */
     public Customer serve(Customer customer) {

@@ -1,12 +1,12 @@
 import java.util.Scanner;
 import java.util.PriorityQueue;
 
-import java.util.Arrays;
-
 public class Main {
 
     /**
-     * @param args
+     * Main method.
+     * 
+     * @param args arguments for command line
      */
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -19,8 +19,6 @@ public class Main {
             pq.add(customer);
         }
 
-        // System.out.println(Arrays.toString(pq.toArray()));
-
         while (pq.peek() != null) {
             Customer customer = pq.poll();
 
@@ -32,7 +30,6 @@ public class Main {
                 pq.add(updatedCustomer);
             }
 
-            // System.out.println(Arrays.toString(pq.toArray()));
         }
 
         double avWaitingTime = server.getAverageWaitingTime();

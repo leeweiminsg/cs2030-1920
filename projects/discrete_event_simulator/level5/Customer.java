@@ -2,8 +2,8 @@ public class Customer implements Comparable<Customer> {
     public static final int ARRIVES = 1;
     public static final int SERVED = 2;
     public static final int LEAVES = 3;
-    public static final int DONE = 4;
-    public static final int WAITS = 5;
+    public static final int WAITS = 4;
+    public static final int DONE = 5;
 
     private static int id = 1;
 
@@ -11,6 +11,11 @@ public class Customer implements Comparable<Customer> {
     private final int customerId;
     private double time;
 
+    /**
+     * Constructor.
+     * 
+     * @param time time of event
+     */
     public Customer(double time) {
         this.customerId = Customer.id++;
         this.time = time;
@@ -18,6 +23,8 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
+     * Get customer Id.
+     * 
      * @return int
      * 
      */
@@ -26,6 +33,8 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
+     * Get customer state.
+     * 
      * @return int
      */
     public int getState() {
@@ -33,6 +42,8 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
+     * Get event time.
+     * 
      * @return double
      */
     public double getTime() {
@@ -40,14 +51,18 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
-     * @param time
+     * Set event time.
+     * 
+     * @param time event time
      */
     public void setTime(double time) {
         this.time = time;
     }
 
     /**
-     * @return Customer
+     * Set customer state to served.
+     * 
+     * @return Customer updated customer
      */
     public Customer setServed() {
         customerState = SERVED;
@@ -55,8 +70,10 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
-     * @param time
-     * @return Customer
+     * Overloaded setServed, with event time to be set.
+     * 
+     * @param time event time
+     * @return Customer updated customer
      */
     public Customer setServed(double time) {
         customerState = SERVED;
@@ -65,7 +82,9 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
-     * @return Customer
+     * Set customer state to served.
+     * 
+     * @return Customer updated customer
      */
     public Customer setLeft() {
         customerState = LEAVES;
@@ -73,7 +92,9 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
-     * @return Customer
+     * Set customer state to served.
+     * 
+     * @return Customer updated customer
      */
     public Customer setWait() {
         customerState = WAITS;
@@ -81,8 +102,10 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
-     * @param time
-     * @return Customer
+     * Set customer state to served, with event time to be set.
+     * 
+     * @param time event time
+     * @return Customer updated customer
      */
     public Customer setDone(double time) {
         customerState = DONE;
@@ -92,6 +115,8 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
+     * Check where customer state is arrives.
+     * 
      * @return boolean
      */
     public boolean isArrived() {
@@ -99,6 +124,8 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
+     * Check where customer state is served.
+     * 
      * @return boolean
      */
     public boolean isServed() {
@@ -106,6 +133,8 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
+     * Check where customer state is leaves.
+     * 
      * @return boolean
      */
     public boolean hasLeft() {
@@ -113,6 +142,8 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
+     * Check where customer state is done.
+     * 
      * @return boolean
      */
     public boolean isDone() {
@@ -120,6 +151,8 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
+     * Check where customer state is waiting.
+     * 
      * @return boolean
      */
     public boolean isWaiting() {
@@ -127,24 +160,34 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
-     * @param customer
-     * @return int
+     * Compare customers.
+     * 
+     * @param customer customer
+     * @return int for compareTo method
      */
     @Override
     public int compareTo(Customer customer) {
-        if (time < customer.getTime()) {
+        if (Math.abs((time - customer.getTime()) / time) < 1e-9) {
+            if (customerId < customer.getCustomerId()) {
+                return -1;
+            } else if (customerId > customer.getCustomerId()) {
+                return 1;
+            }
+        } else if (time < customer.getTime()) {
             return -1;
         } else if (time > customer.getTime()) {
             return 1;
-        } else if (customerId < customer.getCustomerId()) {
-            return -1;
         } else {
-            return 1;
+            return 0;
         }
+
+        return 0;
     }
 
     /**
-     * @param obj
+     * Override equals.
+     * 
+     * @param obj object
      * @return boolean
      */
     @Override
@@ -155,6 +198,8 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
+     * Override toString.
+     * 
      * @return String
      */
     @Override
