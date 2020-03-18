@@ -5,7 +5,7 @@ class Cluster {
   private final ArrayList<Case> cases;
 }
 
-abstract class Case {
+class Case {
   private final int id;
 
   private enum contactNature {
@@ -15,9 +15,6 @@ abstract class Case {
   private final ArrayList<Case> contacts;
 }
 
-class localCase extends Case {
-}
-
-class importedCase extends Case {
+class ImportedCase extends Case {
   private final String country;
 }
