@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
 
 class D<T> {
   public static <T> List<T> add(List<T> Lst, T t) {
@@ -7,7 +8,7 @@ class D<T> {
     return Lst;
   }
 
-  public static <T, U extends T> List<T> join(List<T> Lst1, List<U> Lst2) {
+  public static <T> List<T> join(List<T> Lst1, List<? extends T> Lst2) {
     if (Lst1.equals(Lst2)) {
       return Lst1;
     }

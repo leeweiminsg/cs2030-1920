@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 class A {
-  private final ArrayList<Integer> intArray;
+  private ArrayList<Integer> intArray;
 
   A(int n) {
     intArray = new ArrayList<>();

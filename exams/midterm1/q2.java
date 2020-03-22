@@ -1,4 +1,6 @@
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 interface TypeCaster<S, T> {
   T cast(S s);
@@ -26,11 +28,11 @@ class ToList<T> implements TypeCaster<T[], List<T>> {
 }
 
 class ListCaster {
-  static <S, T> List<T> castList(List<S> Lst, TypeCaster<? super S, ? extends T> tc) {
-    List<T> TLst = new ArrayList<T>();
+  static <S, T> List<T> castList(List<S> lst, TypeCaster<? super S, ? extends T> tc) {
+    List<T> Tlst = new ArrayList<>();
 
-    Lst.forEach(s -> TLst.add(tc.cast(s)));
+    lst.forEach(s -> Tlst.add(tc.cast(s)));
 
-    return TLst;
+    return Tlst;
   }
 }

@@ -1,5 +1,5 @@
 class X {
-    private final int n;
+    private int n;
 
     X(int n) {
         this.n = n;
@@ -7,12 +7,12 @@ class X {
 
     @Override
     public String toString() {
-        return String.format("X:%d", n);
+        return "X:" + n;
     }
 }
 
 class Y {
-    private final X x;
+    private X x;
 
     Y(X x) {
         this.x = x;
@@ -20,6 +20,6 @@ class Y {
 
     @Override
     public String toString() {
-        return String.format("Y->" + x.toString());
+        return "Y->" + x.toString();
     }
 }

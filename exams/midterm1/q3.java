@@ -1,20 +1,23 @@
-import java.util.ArrayList;
+import java.util.List;
 
 class Cluster {
-  private final String name;
-  private final ArrayList<Case> cases;
+  private String name;
+  private List<Case> cases;
 }
 
 class Case {
-  private final int id;
-
-  private enum contactNature {
-    CASUAL, CLOSE, FAMILY;
-  }
-
-  private final ArrayList<Case> contacts;
+  private int id;
 }
 
 class ImportedCase extends Case {
-  private final String country;
+  private String country;
+}
+
+enum contactNature {
+  CASUAL, CLOSE, FAMILY;
+}
+
+class Contact {
+  private Case case1, case2;
+  private contactNature nature;
 }
