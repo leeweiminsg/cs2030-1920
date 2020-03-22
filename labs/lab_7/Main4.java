@@ -1,24 +1,28 @@
-import java.util.stream.*;
-import java.util.List;
-import java.util.stream.Collectors.*;
+import java.util.stream.Stream;
 import java.util.NoSuchElementException;
 
 class Main {
-  static int max, min;
+    public static double normalizedMean(Stream<Integer> stream) {
+        Stream<Statistics> statsSteam = stream.map(n -> new Statistics(n, n, n, 1));
 
-  public static double normalizedMean(Stream<Integer> stream) {
-    List<Integer> listStream = stream.collect(Collectors.toList());
+        try {
+            Statistics result = statsSteam.reduce(
+                (s1, s2) -> new Statistics(
+                        Math.min(s1.getMin(), s2.getMin()),
+                        Math.max(s1.getMax(), s2.getMax()), 
+                        s1.getSum() + s2.getSum(), 
+                        s1.getCount() + s2.getCount())).get();
 
-    try {
-      max = listStream.stream().mapToInt(Integer::intValue).max().getAsInt();
-      min = listStream.stream().mapToInt(Integer::intValue).min().getAsInt();
-      double result = (double) (listStream.stream().mapToInt(Integer::intValue).sum() / listStream.stream().count()
-          - min) / (max - min);
+            double ans = (((double) result.getSum() / result.getCount()) - result.getMin())
+                / (result.getMax() - result.getMin());
 
-      return Double.isNaN(result) ? 0 : result;
+            if (Double.isNaN(ans)) {
+                return 0;
+            }
 
-    } catch (ArithmeticException | NoSuchElementException e) {
-      return 0;
+            return ans;
+        } catch (NoSuchElementException e) {
+            return 0;
+        }
     }
-  }
 }
