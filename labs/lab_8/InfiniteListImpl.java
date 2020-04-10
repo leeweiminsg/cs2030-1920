@@ -34,19 +34,16 @@ abstract class InfiniteListImpl<T> implements InfiniteList<T> {
     }
 
     public InfiniteList<T> limit(long n) throws IllegalArgumentException {
-        if (n < 0) {
-            throw new IllegalArgumentException(String.format("%d", n));
-        }
-
         return new InfiniteListImpl<T>() {
-            private long i = n;
+            long i = 1;
 
+            @Override
             public Optional<T> get() {
-                if (i == 0) {
+                if (i > n) {
                     return Optional.empty();
                 }
 
-                i -= 1;
+                i++;
                 return InfiniteListImpl.this.get();
             }
         };
@@ -81,10 +78,6 @@ abstract class InfiniteListImpl<T> implements InfiniteList<T> {
             public Optional<T> get() {
                 Optional<T> curr = InfiniteListImpl.this.get();
 
-                if (curr.isEmpty()) {
-                    return curr;
-                }
-
                 while (curr.isPresent() && !predicate.test(curr.get())) {
                     curr = InfiniteListImpl.this.get();
                 }
@@ -96,36 +89,25 @@ abstract class InfiniteListImpl<T> implements InfiniteList<T> {
 
     public InfiniteList<T> takeWhile(Predicate<? super T> predicate) {
         return new InfiniteListImpl<T>() {
-            private boolean canGet = true;
-
             public Optional<T> get() {
-                if (!canGet) {
-                    return Optional.empty();
-                }
-
                 Optional<T> curr = InfiniteListImpl.this.get();
 
-                if (!predicate.test(curr.get())) {
-                    canGet = false;
-                    return Optional.empty();
-                }
-
-                return curr;
+                return curr.filter(predicate);
             }
         };
     }
 
     public long count() {
-        long ans = 0;
+        long n = 0;
 
         Optional<T> curr = get();
 
         while (curr.isPresent()) {
-            ans += 1;
+            n++;
             curr = get();
         }
 
-        return ans;
+        return n;
     }
 
     public Optional<T> reduce(BinaryOperator<T> accumulator) {
@@ -140,12 +122,13 @@ abstract class InfiniteListImpl<T> implements InfiniteList<T> {
 
     public T reduce(T identity, BinaryOperator<T> accumulator) {
         Optional<T> curr = get();
+        T res = identity;
 
         while (curr.isPresent()) {
-            identity = accumulator.apply(identity, curr.get());
+            res = accumulator.apply(res, curr.get());
             curr = get();
         }
 
-        return identity;
+        return res;
     }
 }
