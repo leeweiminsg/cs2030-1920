@@ -8,17 +8,18 @@ class Main {
         try {
             Statistics result = statsSteam.reduce(
                 (s1, s2) -> new Statistics(
-                        Math.min(s1.getMin(), s2.getMin()),
-                        Math.max(s1.getMax(), s2.getMax()), 
-                        s1.getSum() + s2.getSum(), 
-                        s1.getCount() + s2.getCount())).get();
+                        Math.min(s1.min, s2.min),
+                        Math.max(s1.max, s2.max), 
+                        s1.sum + s2.sum, 
+                        s1.count + s2.count))
+                    .get();
 
-            double ans = (((double) result.getSum() / result.getCount()) - result.getMin())
-                / (result.getMax() - result.getMin());
-
-            if (Double.isNaN(ans)) {
+            if (result.count == 0 || result.max == result.min) {
                 return 0;
             }
+
+            double ans = (((double) result.sum / result.count) - result.min)
+                / (result.max - result.min);
 
             return ans;
         } catch (NoSuchElementException e) {

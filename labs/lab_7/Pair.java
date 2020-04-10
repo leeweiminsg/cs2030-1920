@@ -1,17 +1,9 @@
 class Pair<T> {
-    private final T first;
-    private final T second;
+    public final T m;
+    public final T n;
 
-    Pair(T first, T second) {
-        this.first = first;
-        this.second = second;
-    }
-
-    T getFirst() {
-        return first;
-    }
-
-    T getSecond() {
-        return second;
+    Pair(T m, T n) {
+        this.m = m;
+        this.n = n;
     }
 }
