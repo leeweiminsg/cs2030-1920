@@ -1,23 +1,32 @@
-public class Customer implements Comparable<Customer> {
-    public static final int ARRIVES = 1;
-    public static final int SERVED = 2;
-    public static final int LEAVES = 3;
-    public static final int DONE = 4;
-    public static final int WAITS = 5;
-
+class Customer implements Comparable<Customer> {
     private static int id = 1;
 
-    private int customerState;
-    private final int customerId;
-    private double time;
+    private enum customerState {
+        ARRIVES, SERVED, LEAVES, WAITS, DONE
+    }
 
-    public Customer(double time) {
-        this.customerId = Customer.id++;
-        this.time = time;
-        this.customerState = Customer.ARRIVES;
+    private final int customerId;
+    private customerState customerStatus;
+
+    /**
+     * Constructor.
+     */
+    Customer() {
+        customerId = Customer.id++;
+        customerStatus = customerState.ARRIVES;
     }
 
     /**
+     * Overloaded constructor.
+     */
+    Customer(int customerId, customerState customerStatus) {
+        this.customerId = customerId;
+        this.customerStatus = customerStatus;
+    }
+
+    /**
+     * Get customer ID.
+     * 
      * @return int
      * 
      */
@@ -26,131 +35,63 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
-     * @return int
-     */
-    public int getState() {
-        return customerState;
-    }
-
-    /**
-     * @return double
-     */
-    public double getTime() {
-        return time;
-    }
-
-    /**
-     * @param time
-     */
-    public void setTime(double time) {
-        this.time = time;
-    }
-
-    /**
-     * @return Customer
+     * Set customer state to served.
+     * 
+     * @return Customer updated customer
      */
     public Customer setServed() {
-        customerState = SERVED;
-        return this;
+        return new Customer(customerId, customerState.SERVED);
     }
 
     /**
-     * @param time
-     * @return Customer
-     */
-    public Customer setServed(double time) {
-        customerState = SERVED;
-        this.time = time;
-        return this;
-    }
-
-    /**
-     * @return Customer
-     */
-    public Customer setLeft() {
-        customerState = LEAVES;
-        return this;
-    }
-
-    /**
-     * @return Customer
-     */
-    public Customer setWait() {
-        customerState = WAITS;
-        return this;
-    }
-
-    public Customer setDone() {
-        customerState = DONE;
-        time += 1;
-        return this;
-    }
-
-    /**
-     * @param time
-     * @return Customer
-     */
-    public Customer setDone(double time) {
-        customerState = DONE;
-        this.time = time;
-
-        return this;
-    }
-
-    /**
+     * Check where customer state is arrives.
+     * 
      * @return boolean
      */
     public boolean isArrived() {
-        return customerState == ARRIVES;
+        return customerStatus == customerState.ARRIVES;
     }
 
     /**
+     * Check where customer state is served.
+     * 
      * @return boolean
      */
     public boolean isServed() {
-        return customerState == SERVED;
+        return customerStatus == customerState.SERVED;
     }
 
     /**
+     * Check where customer state is leaves.
+     * 
      * @return boolean
      */
     public boolean hasLeft() {
-        return customerState == LEAVES;
+        return customerStatus == customerState.LEAVES;
     }
 
     /**
+     * Check where customer state is done.
+     * 
      * @return boolean
      */
     public boolean isDone() {
-        return customerState == DONE;
+        return customerStatus == customerState.DONE;
     }
 
     /**
+     * Check where customer state is waiting.
+     * 
      * @return boolean
      */
     public boolean isWaiting() {
-        return customerState == WAITS;
+        return customerStatus == customerState.WAITS;
     }
 
     /**
-     * @param customer
-     * @return int
-     */
-    @Override
-    public int compareTo(Customer customer) {
-        if (time < customer.getTime()) {
-            return -1;
-        } else if (time > customer.getTime()) {
-            return 1;
-        } else if (customerId < customer.getCustomerId()) {
-            return -1;
-        } else {
-            return 1;
-        }
-    }
-
-    /**
-     * @param obj
+     * Override equals.
+     * 
+     * @param obj object
      * @return boolean
      */
     @Override
@@ -161,10 +102,23 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
+     * Override compareTo.
+     * 
+     * @param customer customer
+     * @return int for compareTo method
+     */
+    @Override
+    public int compareTo(Customer customer) {
+        return customerId - customer.getCustomerId();
+    }
+
+    /**
+     * Override toString.
+     * 
      * @return String
      */
     @Override
     public String toString() {
-        return String.format("%d arrives at %.3f", customerId, time);
+        return Integer.toString(customerId);
     }
 }
