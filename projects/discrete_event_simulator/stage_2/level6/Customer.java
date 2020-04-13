@@ -1,30 +1,31 @@
-public class Customer implements Comparable<Customer> {
-    public static final int ARRIVES = 1;
-    public static final int SERVED = 2;
-    public static final int LEAVES = 3;
-    public static final int WAITS = 4;
-    public static final int DONE = 5;
-
+class Customer implements Comparable<Customer> {
     private static int id = 1;
 
-    private int customerState;
+    private enum customerState {
+        ARRIVES, SERVED, LEAVES, WAITS, DONE
+    }
+
     private final int customerId;
-    private double time;
-    private int serverId = -1;
+    private customerState customerStatus;
 
     /**
      * Constructor.
-     * 
-     * @param time time of event
      */
-    public Customer(double time) {
-        this.customerId = Customer.id++;
-        this.time = time;
-        this.customerState = Customer.ARRIVES;
+    Customer() {
+        customerId = Customer.id++;
+        customerStatus = customerState.ARRIVES;
     }
 
     /**
-     * Get customer Id.
+     * Overloaded constructor.
+     */
+    Customer(int customerId, customerState customerStatus) {
+        this.customerId = customerId;
+        this.customerStatus = customerStatus;
+    }
+
+    /**
+     * Get customer ID.
      * 
      * @return int
      * 
@@ -34,117 +35,39 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
-     * Get customer state.
-     * 
-     * @return int
-     */
-    public int getState() {
-        return customerState;
-    }
-
-    /**
-     * Get event time.
-     * 
-     * @return double
-     */
-    public double getTime() {
-        return time;
-    }
-
-    /**
-     * Set event time.
-     * 
-     * @param time event time
-     */
-    public void setTime(double time) {
-        this.time = time;
-    }
-
-    /**
-     * Set server id.
-     * 
-     * @param serverId server id
-     */
-    public void setServerId(int serverId) {
-        this.serverId = serverId;
-    }
-
-    /**
-     * Check whether customer has server.
-     * 
-     * @return boolean
-     */
-    public boolean hasServer() {
-        return serverId != -1;
-    }
-
-    /**
-     * Get server id.
-     * 
-     * @return int server id
-     */
-    public int getServerId() {
-        return serverId;
-    }
-
-    /**
      * Set customer state to served.
      * 
      * @return Customer updated customer
      */
-    public Customer setServed(int serverId) {
-        customerState = SERVED;
-        setServerId(serverId);
-
-        return this;
+    public Customer setServed() {
+        return new Customer(customerId, customerState.SERVED);
     }
 
     /**
-     * Overloaded setServed, with event time to be set.
-     * 
-     * @param time event time
-     * @return Customer updated customer
-     */
-    public Customer setServed(double time) {
-        customerState = SERVED;
-        this.time = time;
-
-        return this;
-    }
-
-    /**
-     * Set customer state to served.
+     * Set customer state to waits.
      * 
      * @return Customer updated customer
      */
-    public Customer setLeft() {
-        customerState = LEAVES;
-
-        return this;
+    public Customer setWait() {
+        return new Customer(customerId, customerState.WAITS);
     }
 
     /**
-     * Set customer state to served.
+     * Set customer state to leaves.
      * 
      * @return Customer updated customer
      */
-    public Customer setWait(int serverId) {
-        customerState = WAITS;
-        setServerId(serverId);
-
-        return this;
+    public Customer setLeave() {
+        return new Customer(customerId, customerState.LEAVES);
     }
 
     /**
-     * Set customer state to served, with event time to be set.
+     * Set customer state to done.
      * 
      * @return Customer updated customer
      */
     public Customer setDone() {
-        customerState = DONE;
-        this.time += 1;
-
-        return this;
+        return new Customer(customerId, customerState.DONE);
     }
 
     /**
@@ -153,7 +76,7 @@ public class Customer implements Comparable<Customer> {
      * @return boolean
      */
     public boolean isArrived() {
-        return customerState == ARRIVES;
+        return customerStatus == customerState.ARRIVES;
     }
 
     /**
@@ -162,7 +85,7 @@ public class Customer implements Comparable<Customer> {
      * @return boolean
      */
     public boolean isServed() {
-        return customerState == SERVED;
+        return customerStatus == customerState.SERVED;
     }
 
     /**
@@ -171,7 +94,7 @@ public class Customer implements Comparable<Customer> {
      * @return boolean
      */
     public boolean hasLeft() {
-        return customerState == LEAVES;
+        return customerStatus == customerState.LEAVES;
     }
 
     /**
@@ -180,7 +103,7 @@ public class Customer implements Comparable<Customer> {
      * @return boolean
      */
     public boolean isDone() {
-        return customerState == DONE;
+        return customerStatus == customerState.DONE;
     }
 
     /**
@@ -189,32 +112,7 @@ public class Customer implements Comparable<Customer> {
      * @return boolean
      */
     public boolean isWaiting() {
-        return customerState == WAITS;
-    }
-
-    /**
-     * Compare customers.
-     * 
-     * @param customer customer
-     * @return int for compareTo method
-     */
-    @Override
-    public int compareTo(Customer customer) {
-        if (Math.abs((time - customer.getTime()) / time) < 1e-9) {
-            if (customerId < customer.getCustomerId()) {
-                return -1;
-            } else if (customerId > customer.getCustomerId()) {
-                return 1;
-            }
-        } else if (time < customer.getTime()) {
-            return -1;
-        } else if (time > customer.getTime()) {
-            return 1;
-        } else {
-            return 0;
-        }
-
-        return 0;
+        return customerStatus == customerState.WAITS;
     }
 
     /**
@@ -231,22 +129,23 @@ public class Customer implements Comparable<Customer> {
     }
 
     /**
+     * Override compareTo.
+     * 
+     * @param customer customer
+     * @return int for compareTo method
+     */
+    @Override
+    public int compareTo(Customer customer) {
+        return customerId - customer.getCustomerId();
+    }
+
+    /**
      * Override toString.
      * 
      * @return String
      */
     @Override
     public String toString() {
-        if (isArrived()) {
-            return String.format("%.3f %d arrives", time, customerId);
-        } else if (isServed()) {
-            return String.format("%.3f %d served by %d", time, customerId, serverId);
-        } else if (hasLeft()) {
-            return String.format("%.3f %d leaves", time, customerId);
-        } else if (isDone()) {
-            return String.format("%.3f %d done serving by %d", time, customerId, serverId);
-        } else {
-            return String.format("%.3f %d waits to be served by %d", time, customerId, serverId);
-        }
+        return Integer.toString(customerId);
     }
 }

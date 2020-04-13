@@ -1,8 +1,7 @@
 import java.util.Scanner;
-import java.util.PriorityQueue;
+import java.util.ArrayList;
 
 public class Main {
-
     /**
      * Main method.
      * 
@@ -10,31 +9,21 @@ public class Main {
      */
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        PriorityQueue<Customer> pq = new PriorityQueue<>();
+        ArrayList<Double> timesArray = new ArrayList<>();
 
         int serverNum = sc.nextInt();
-
-        Server.createServers(serverNum);
+        EventHandler eventHandler = new EventHandler(serverNum);
 
         while (sc.hasNextDouble()) {
             double arrivalTime = sc.nextDouble();
-            Customer customer = new Customer(arrivalTime);
-            pq.add(customer);
+            timesArray.add(arrivalTime);
         }
+        
+        eventHandler.createArrivalEvents(timesArray);
 
-        while (pq.peek() != null) {
-            Customer customer = pq.poll();
+        eventHandler.processEvents();
 
-            System.out.println(customer);
-
-            Server.processCustomer(customer, pq);
-        }
-
-        System.out.println(
-                String.format("[%.3f %d %d]", 
-                        Server.getAvWaitTime(), 
-                        Server.getServes(), 
-                        Server.getLeaves()));
+        eventHandler.displayStats();
 
         sc.close();
     }
