@@ -4,11 +4,11 @@ public class Event implements Comparable<Event> {
     private final Customer customer;
     private final Server server;
 
-    private enum eventState {
+    private enum EventState {
         SERVER_REST, SERVER_BACK, ARRIVES, SERVED, LEAVES, WAITS, DONE
     }
 
-    private final eventState eventStatus;
+    private final EventState eventStatus;
     private final double time;
 
     /**
@@ -19,7 +19,7 @@ public class Event implements Comparable<Event> {
     Event(Customer customer) {
         this.customer = customer;
         server = null;
-        eventStatus = eventState.ARRIVES;
+        eventStatus = EventState.ARRIVES;
         time = customer.getArrivalTime();
     }
 
@@ -31,7 +31,7 @@ public class Event implements Comparable<Event> {
      * @param eventStatus event status
      * @param time        time
      */
-    Event(Customer customer, Server server, eventState eventStatus, double time) {
+    Event(Customer customer, Server server, EventState eventStatus, double time) {
         this.customer = customer;
         this.server = server;
         this.eventStatus = eventStatus;
@@ -45,7 +45,7 @@ public class Event implements Comparable<Event> {
      * @return serve event
      */
     Event serve(Server server) {
-        return new Event(customer.setServed(), server, eventState.SERVED, time);
+        return new Event(customer.setServed(), server, EventState.SERVED, time);
     }
 
     /**
@@ -55,7 +55,7 @@ public class Event implements Comparable<Event> {
      * @return wait event
      */
     Event wait(Server server) {
-        return new Event(customer.setWait(), server, eventState.WAITS, time);
+        return new Event(customer.setWait(), server, EventState.WAITS, time);
     }
 
     /**
@@ -64,7 +64,7 @@ public class Event implements Comparable<Event> {
      * @return leave event
      */
     Event leave() {
-        return new Event(customer.setLeave(), null, eventState.LEAVES, time);
+        return new Event(customer.setLeave(), null, EventState.LEAVES, time);
     }
 
     /**
@@ -74,7 +74,7 @@ public class Event implements Comparable<Event> {
      */
     Event done() {
         Customer doneCustomer = server.serve(customer);
-        return new Event(doneCustomer, server, eventState.DONE, doneCustomer.getTime());
+        return new Event(doneCustomer, server, EventState.DONE, doneCustomer.getTime());
     }
 
     /**
@@ -83,7 +83,7 @@ public class Event implements Comparable<Event> {
      * @return server rest event
      */
     Event serverRest() {
-        return new Event(null, server, eventState.SERVER_REST, time);
+        return new Event(null, server, EventState.SERVER_REST, time);
     }
 
     /**
@@ -92,7 +92,7 @@ public class Event implements Comparable<Event> {
      * @return server back event
      */
     Event serverBack() {
-        return new Event(null, server, eventState.SERVER_BACK, server.getNextServeTime());
+        return new Event(null, server, EventState.SERVER_BACK, server.getNextServeTime());
     }
 
     /**
@@ -116,7 +116,7 @@ public class Event implements Comparable<Event> {
             return server.isResting() ? serverRest() : null;
         }
 
-        return new Event(newServedCustomer, server, eventState.SERVED, newServedCustomer.getTime());
+        return new Event(newServedCustomer, server, EventState.SERVED, newServedCustomer.getTime());
     }
 
     /**
@@ -132,7 +132,7 @@ public class Event implements Comparable<Event> {
             return null;
         }
 
-        return new Event(newServedCustomer, server, eventState.SERVED, newServedCustomer.getTime());
+        return new Event(newServedCustomer, server, EventState.SERVED, newServedCustomer.getTime());
     }
 
     /**
@@ -177,7 +177,7 @@ public class Event implements Comparable<Event> {
      * @return boolean
      */
     public boolean isServerRestEvent() {
-        return eventStatus == eventState.SERVER_REST;
+        return eventStatus == EventState.SERVER_REST;
     }
 
     /**
@@ -186,7 +186,7 @@ public class Event implements Comparable<Event> {
      * @return boolean
      */
     public boolean isServerBackEvent() {
-        return eventStatus == eventState.SERVER_BACK;
+        return eventStatus == EventState.SERVER_BACK;
     }
 
     /**
@@ -195,7 +195,7 @@ public class Event implements Comparable<Event> {
      * @return boolean
      */
     public boolean isArriveEvent() {
-        return eventStatus == eventState.ARRIVES;
+        return eventStatus == EventState.ARRIVES;
     }
 
     /**
@@ -204,7 +204,7 @@ public class Event implements Comparable<Event> {
      * @return boolean
      */
     public boolean isServedEvent() {
-        return eventStatus == eventState.SERVED;
+        return eventStatus == EventState.SERVED;
     }
 
     /**
@@ -213,7 +213,7 @@ public class Event implements Comparable<Event> {
      * @return boolean
      */
     public boolean isWaitEvent() {
-        return eventStatus == eventState.WAITS;
+        return eventStatus == EventState.WAITS;
     }
 
     /**
@@ -222,7 +222,7 @@ public class Event implements Comparable<Event> {
      * @return boolean
      */
     public boolean isLeaveEvent() {
-        return eventStatus == eventState.LEAVES;
+        return eventStatus == EventState.LEAVES;
     }
 
     /**
@@ -231,7 +231,7 @@ public class Event implements Comparable<Event> {
      * @return boolean
      */
     public boolean isDoneEvent() {
-        return eventStatus == eventState.DONE;
+        return eventStatus == EventState.DONE;
     }
 
     /**

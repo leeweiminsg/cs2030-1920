@@ -3,13 +3,13 @@ package cs2030.simulator;
 public class Customer implements Comparable<Customer> {
     private static int id = 1;
 
-    private enum customerState {
+    private enum CustomerState {
         ARRIVES, SERVED, LEAVES, WAITS, DONE
     }
 
     private final int customerId;
     private final boolean isGreedy;
-    private final customerState customerStatus;
+    private final CustomerState customerStatus;
     private final double arrivalTime;
     private final double time;
 
@@ -22,7 +22,7 @@ public class Customer implements Comparable<Customer> {
     Customer(double time, boolean isGreedy) {
         customerId = Customer.id++;
         this.isGreedy = isGreedy;
-        customerStatus = customerState.ARRIVES;
+        customerStatus = CustomerState.ARRIVES;
         arrivalTime = time;
         this.time = time;
     }
@@ -37,7 +37,7 @@ public class Customer implements Comparable<Customer> {
      * @param time           time
      */
     Customer(int customerId, boolean isGreedy, 
-            customerState customerStatus, double arrivalTime, double time) {
+            CustomerState customerStatus, double arrivalTime, double time) {
         this.customerId = customerId;
         this.isGreedy = isGreedy;
         this.customerStatus = customerStatus;
@@ -140,7 +140,7 @@ public class Customer implements Comparable<Customer> {
      * @return Customer
      */
     public Customer setServed() {
-        return new Customer(customerId, isGreedy, customerState.SERVED, arrivalTime, time);
+        return new Customer(customerId, isGreedy, CustomerState.SERVED, arrivalTime, time);
     }
 
     /**
@@ -149,7 +149,7 @@ public class Customer implements Comparable<Customer> {
      * @return Customer
      */
     public Customer setWait() {
-        return new Customer(customerId, isGreedy, customerState.WAITS, arrivalTime, time);
+        return new Customer(customerId, isGreedy, CustomerState.WAITS, arrivalTime, time);
     }
 
     /**
@@ -158,7 +158,7 @@ public class Customer implements Comparable<Customer> {
      * @return Customer
      */
     public Customer setLeave() {
-        return new Customer(customerId, isGreedy, customerState.LEAVES, arrivalTime, time);
+        return new Customer(customerId, isGreedy, CustomerState.LEAVES, arrivalTime, time);
     }
 
     /**
@@ -167,7 +167,7 @@ public class Customer implements Comparable<Customer> {
      * @return Customer
      */
     public Customer setDone() {
-        return new Customer(customerId, isGreedy, customerState.DONE, arrivalTime, time);
+        return new Customer(customerId, isGreedy, CustomerState.DONE, arrivalTime, time);
     }
 
     /**
@@ -176,7 +176,7 @@ public class Customer implements Comparable<Customer> {
      * @return boolean
      */
     public boolean isArrived() {
-        return customerStatus == customerState.ARRIVES;
+        return customerStatus == CustomerState.ARRIVES;
     }
 
     /**
@@ -185,7 +185,7 @@ public class Customer implements Comparable<Customer> {
      * @return boolean
      */
     public boolean isServed() {
-        return customerStatus == customerState.SERVED;
+        return customerStatus == CustomerState.SERVED;
     }
 
     /**
@@ -194,7 +194,7 @@ public class Customer implements Comparable<Customer> {
      * @return boolean
      */
     public boolean hasLeft() {
-        return customerStatus == customerState.LEAVES;
+        return customerStatus == CustomerState.LEAVES;
     }
 
     /**
@@ -203,7 +203,7 @@ public class Customer implements Comparable<Customer> {
      * @return boolean
      */
     public boolean isDone() {
-        return customerStatus == customerState.DONE;
+        return customerStatus == CustomerState.DONE;
     }
 
     /**
@@ -212,7 +212,7 @@ public class Customer implements Comparable<Customer> {
      * @return boolean
      */
     public boolean isWaiting() {
-        return customerStatus == customerState.WAITS;
+        return customerStatus == CustomerState.WAITS;
     }
 
     /**
